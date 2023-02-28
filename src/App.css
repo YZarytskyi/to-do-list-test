@@ -1,38 +1,85 @@
 .App {
+  padding: 40px;
+}
+
+.input__error {
+  border: 2px solid red;
+}
+
+.text__error {
+  color: red;
+}
+
+form {
+  min-height: 130px;
+  display: flex;
+  gap: 30px;
+}
+
+label {
+  gap: 10px;
+}
+
+label input {
+  display: block;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.form__submitBtn {
+  height: fit-content;
+  margin-top: 35px;
+}
+
+table {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  min-width: 1000px;
+}
+
+thead {
+  background-color: rgb(226, 226, 226);
+}
+
+td, th {
+  padding: 10px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+tbody tr {
+  cursor: pointer;
+  background-color: rgb(196, 196, 196);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.modal__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: rgb(0, 0, 0, 0.4);
 }
 
-.App-link {
-  color: #61dafb;
+.modal {
+  width: 500px;
+  padding: 20px;
+  background-color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.modal__title {
+  font-size: 22px;
+  text-align: center;
+}
+
+.modal__description {
+  font-weight: 700;
+}
+
+.modal button {
+  display: block;
+  margin: 0 auto;
 }
