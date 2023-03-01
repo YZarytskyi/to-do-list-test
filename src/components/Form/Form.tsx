@@ -20,20 +20,16 @@ const Form = () => {
   }) => {
     if (target.name === TITLE_NAME) {
       setTitle(target.value);
-      target.value && setTitleError(false);
+      titleError && setTitleError(false);
       return;
     }
     setDescription(target.value);
-    target.value && setDescriptionError(false);
+    descriptionError && setDescriptionError(false);
   };
 
   const validate = () => {
-    if (!title) {
-      setTitleError(true);
-    }
-    if (!description) {
-      setDescriptionError(true);
-    }
+    !title && setTitleError(true);
+    !description && setDescriptionError(true);
   };
 
   const onSubmitCreateNewToDo: FormEventHandler<HTMLFormElement> = (e) => {
