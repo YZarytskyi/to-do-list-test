@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useRef, useState } from "react";
+import { FC, MouseEventHandler, useState } from "react";
 import { IToDoItem } from "types";
 import Modal from "components/Modal/Modal";
 import { useAppDispatch } from "store/redux-hooks";
@@ -13,14 +13,13 @@ const ToDoItem: FC<ToDoItemProps> = ({ item }) => {
 
   const dispatch = useAppDispatch();
   const [showModal, setShowModal] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const onChangeStatus = () => {
     dispatch(setToDoItemStatus(id));
   };
 
   const onClickModalOpen: MouseEventHandler<HTMLTableRowElement> = (e) => {
-    if (e.target === inputRef?.current) {
+    if ((e.target as HTMLElement).tagName === 'INPUT') {
       return;
     }
     setShowModal(true);
@@ -41,7 +40,6 @@ const ToDoItem: FC<ToDoItemProps> = ({ item }) => {
             type="checkbox"
             checked={status}
             onChange={onChangeStatus}
-            ref={inputRef}
           />
         </td>
       </tr>
