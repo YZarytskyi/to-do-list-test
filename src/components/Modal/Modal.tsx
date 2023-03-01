@@ -2,7 +2,6 @@ import { FC, Dispatch, SetStateAction, MouseEvent, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 interface ModalToDoProps {
-  showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   onChangeStatus: () => void;
   title: string;
@@ -11,7 +10,6 @@ interface ModalToDoProps {
 }
 
 const ModalToDo: FC<ModalToDoProps> = ({
-  showModal,
   setShowModal,
   onChangeStatus,
   title,
@@ -25,7 +23,7 @@ const ModalToDo: FC<ModalToDoProps> = ({
       window.removeEventListener("keydown", onPressEsc);
     };
   }, []);
-
+  
   function onPressEsc(e: KeyboardEvent) {
     if (e.code === "Escape") {
       setShowModal(false);
@@ -39,8 +37,6 @@ const ModalToDo: FC<ModalToDoProps> = ({
       setShowModal(false);
     }
   }
-
-  if (!showModal) return null;
 
   return createPortal(
     <div onClick={onClickCloseModal} className="modal__backdrop">
