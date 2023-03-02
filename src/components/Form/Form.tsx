@@ -1,54 +1,58 @@
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
-import { useAppDispatch, useAppSelector } from "store/redux-hooks";
-import { addNewToDoItem } from "store/toDo/toDoSlice";
+import React, {
+  ChangeEventHandler,
+  FC,
+  FormEventHandler,
+  useRef,
+  useState,
+} from 'react';
+import { IToDoItemPayload } from 'types';
 
-const ERROR_MESSAGE = "This field is empty";
-const TITLE_NAME = "title";
-const DESCRIPTION_NAME = "description";
+const ERROR_MESSAGE = 'This field is empty';
+const TITLE_NAME = 'title';
+const DESCRIPTION_NAME = 'description';
 
-const Form = () => {
-  const dispatch = useAppDispatch();
-  const toDoList = useAppSelector((state) => state.toDo.toDoList);
+interface FormProps {
+  addNewToDoItem: (payload: IToDoItemPayload) => void;
+}
 
-  const [title, setTitle] = useState<string>("");
+const Form: FC<FormProps> = ({ addNewToDoItem }) => {
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+
   const [titleError, setTitleError] = useState(false);
-  const [description, setDescription] = useState<string>("");
   const [descriptionError, setDescriptionError] = useState(false);
 
-  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = ({
-    target,
-  }) => {
-    if (target.name === TITLE_NAME) {
-      setTitle(target.value);
-      titleError && setTitleError(false);
-      return;
-    }
-    setDescription(target.value);
-    descriptionError && setDescriptionError(false);
-  };
-
-  const validate = () => {
+  const validate = (title: string, description: string) => {
     !title && setTitleError(true);
     !description && setDescriptionError(true);
   };
 
-  const onSubmitCreateNewToDo: FormEventHandler<HTMLFormElement> = (e) => {
+  const onSubmitCreateNewToDo: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
+    const title = titleRef.current?.value as string;
+    const description = descriptionRef.current?.value as string;
+
     if (!title || !description) {
-      validate();
+      validate(title, description);
       return;
     }
 
     const newToDo = {
-      id: toDoList.length + 1,
       title,
       description,
       status: false,
     };
 
-    dispatch(addNewToDoItem(newToDo));
-    setDescription("");
-    setTitle("");
+    addNewToDoItem(newToDo);
+    (e.target as HTMLFormElement).reset();
+  };
+
+  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = e => {
+    if (e.target.name === TITLE_NAME) {
+      titleError && setTitleError(false);
+      return;
+    }
+    descriptionError && setDescriptionError(false);
   };
 
   return (
@@ -60,9 +64,9 @@ const Form = () => {
             type="text"
             name={TITLE_NAME}
             placeholder="Enter title"
-            value={title}
+            className={titleError ? 'input__error' : ''}
             onChange={onChangeHandler}
-            className={titleError ? "input__error" : ""}
+            ref={titleRef}
           />
         </label>
         {titleError && <p className="text__error">{ERROR_MESSAGE}</p>}
@@ -74,9 +78,9 @@ const Form = () => {
             type="text"
             name={DESCRIPTION_NAME}
             placeholder="Enter description"
-            value={description}
+            className={descriptionError ? 'input__error' : ''}
             onChange={onChangeHandler}
-            className={descriptionError ? "input__error" : ""}
+            ref={descriptionRef}
           />
         </label>
         {descriptionError && <p className="text__error">{ERROR_MESSAGE}</p>}
@@ -88,4 +92,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default React.memo(Form);

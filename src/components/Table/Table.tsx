@@ -1,8 +1,13 @@
-import { useAppSelector } from "store/redux-hooks";
-import ToDoItem from "../ToDoItem/ToDoItem";
+import { FC } from 'react';
+import { IToDoItem } from 'types';
+import ToDoItem from '../ToDoItem/ToDoItem';
 
-const Table = () => {
-  const toDoList = useAppSelector((state) => state.toDo.toDoList);
+interface TableProps {
+  setToDoItemStatus: (id: number) => void;
+  toDoList: IToDoItem[];
+}
+
+const Table: FC<TableProps> = ({ setToDoItemStatus, toDoList }) => {
   return (
     <table>
       <thead>
@@ -14,8 +19,12 @@ const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {toDoList.map((item) => (
-          <ToDoItem key={item.id} item={item} />
+        {toDoList.map(item => (
+          <ToDoItem
+            key={item.id}
+            item={item}
+            setToDoItemStatus={setToDoItemStatus}
+          />
         ))}
       </tbody>
     </table>
