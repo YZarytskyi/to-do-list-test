@@ -1,8 +1,8 @@
-import { FC, MouseEventHandler, useRef, useState } from "react";
-import { IToDoItem } from "types";
-import Modal from "components/Modal/Modal";
-import { useAppDispatch } from "store/redux-hooks";
-import { setToDoItemStatus } from "store/toDo/toDoSlice";
+import { FC, MouseEventHandler, useState } from 'react';
+import { IToDoItem } from 'types';
+import Modal from 'components/Modal/Modal';
+import { useAppDispatch } from 'store/redux-hooks';
+import { setToDoItemStatus } from 'store/toDo/toDoSlice';
 
 interface ToDoItemProps {
   item: IToDoItem;
@@ -13,14 +13,13 @@ const ToDoItem: FC<ToDoItemProps> = ({ item }) => {
 
   const dispatch = useAppDispatch();
   const [showModal, setShowModal] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const onChangeStatus = () => {
     dispatch(setToDoItemStatus(id));
   };
 
-  const onClickModalOpen: MouseEventHandler<HTMLTableRowElement> = (e) => {
-    if (e.target === inputRef?.current) {
+  const onClickModalOpen: MouseEventHandler<HTMLTableRowElement> = e => {
+    if ((e.target as HTMLElement).tagName === 'INPUT') {
       return;
     }
     setShowModal(true);
@@ -37,22 +36,18 @@ const ToDoItem: FC<ToDoItemProps> = ({ item }) => {
         <td>{sliceText(title)}</td>
         <td>{sliceText(description)}</td>
         <td>
-          <input
-            type="checkbox"
-            checked={status}
-            onChange={onChangeStatus}
-            ref={inputRef}
-          />
+          <input type="checkbox" checked={status} onChange={onChangeStatus} />
         </td>
       </tr>
-      <Modal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        onChangeStatus={onChangeStatus}
-        title={title}
-        description={description}
-        status={status}
-      />
+      {showModal && (
+        <Modal
+          setShowModal={setShowModal}
+          onChangeStatus={onChangeStatus}
+          title={title}
+          description={description}
+          status={status}
+        />
+      )}
     </>
   );
 };
