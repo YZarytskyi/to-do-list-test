@@ -6,18 +6,16 @@ import './App.css';
 
 function App() {
   const [toDoList, setTodoList] = useState<IToDoItem[]>([]);
-  const toDoListLength = toDoList.length;
 
-  const addNewToDoItem = useCallback(
-    (payload: IToDoItemPayload) => {
+  const addNewToDoItem = useCallback((payload: IToDoItemPayload) => {
+    setTodoList(prev => {
       const newToDo = {
-        id: toDoListLength + 1,
+        id: prev.length + 1,
         ...payload,
       };
-      setTodoList(prev => [...prev, newToDo]);
-    },
-    [toDoListLength]
-  );
+      return [...prev, newToDo];
+    });
+  }, []);
 
   const setToDoItemStatus = useCallback((id: number) => {
     setTodoList(prev =>
