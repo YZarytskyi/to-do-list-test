@@ -1,21 +1,19 @@
-import { FC, MouseEventHandler, useState } from 'react';
+import React, { FC, MouseEventHandler, useState } from 'react';
 import { IToDoItem } from 'types';
 import Modal from 'components/Modal/Modal';
-import { useAppDispatch } from 'store/redux-hooks';
-import { setToDoItemStatus } from 'store/toDo/toDoSlice';
 
 interface ToDoItemProps {
+  setToDoItemStatus: (id: number) => void;
   item: IToDoItem;
 }
 
-const ToDoItem: FC<ToDoItemProps> = ({ item }) => {
+const ToDoItem: FC<ToDoItemProps> = ({ setToDoItemStatus, item }) => {
   const { id, title, description, status } = item;
 
-  const dispatch = useAppDispatch();
   const [showModal, setShowModal] = useState(false);
 
   const onChangeStatus = () => {
-    dispatch(setToDoItemStatus(id));
+    setToDoItemStatus(id);
   };
 
   const onClickModalOpen: MouseEventHandler<HTMLTableRowElement> = e => {
@@ -52,4 +50,4 @@ const ToDoItem: FC<ToDoItemProps> = ({ item }) => {
   );
 };
 
-export default ToDoItem;
+export default React.memo(ToDoItem);
